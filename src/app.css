@@ -1,0 +1,55 @@
+
+/* ==========================================================================
+   Base styles
+   ========================================================================== */
+
+body {
+  color: #333;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+input {
+  font-family: 'Lato', sans-serif;
+  font-size: inherit;
+  color: dodgerblue;
+}
+
+button {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 12px;
+
+  border-color: transparent;
+  background-color: dodgerblue;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+button:not([disabled]):hover {
+  opacity: 0.9;
+}
+
+button[disabled] {
+  background: gainsboro;
+}
+
+button[hidden] {
+  display: none;
+}
+
+main {
+  max-width: 800px;
+  margin: 3rem auto;
+
+  text-align: center;
+}
+
