@@ -1,9 +1,7 @@
 
 /* ==========================================================================
-   Question styles
+   Single question styles
    ========================================================================== */
-
-
 .question {
   margin: 2rem auto;
 
@@ -15,7 +13,6 @@
    ========================================================================== */
 .question input {
   width: 80px;
-
   margin: 0 10px;
 
   outline: none;
@@ -33,13 +30,8 @@
 
 /* Question result message
    ========================================================================== */
-.question-result {
-
-}
-
-.question-result__wrong {
-
-}
+.question-result {  }
+.question-result__wrong {  }
 
 .question-result em {
   font-weight: 600;
