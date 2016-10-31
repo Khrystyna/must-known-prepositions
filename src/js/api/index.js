@@ -15,4 +15,3 @@ const questions = [
 
 export const getQuestions = () => questions;
 export const getQuestionsAmount = () => questions.length;
-// export const getRandomQuestion = () => questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];

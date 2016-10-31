@@ -8,6 +8,8 @@ import {
 import QuizResult from './QuizResult';
 import Question from './Question';
 
+import {random} from '../utils/helpers';
+
 class QuestionForm extends Component {
   constructor(){
     super();
@@ -35,11 +37,10 @@ class QuestionForm extends Component {
   }
 
   getRandomQuestion() {
-    return this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+    return this.questions.splice(random(1, this.questions.length), 1)[0];
   }
 
   update(event) {
-    console.log(event.target.value);
     this.setState({key: event.target.value});
   }
 
@@ -68,11 +69,15 @@ class QuestionForm extends Component {
   }
 
   getResultMessage () {
-    if (this.state.isFormSubmitted && this.state.isAnswerCorrect) {return <span>Correct!</span>;}
-    else if (this.state.isFormSubmitted && !this.state.isAnswerCorrect) {
-      return  <span>Wrong. Correct answer is <em>{this.state.body[1]}</em></span>;
-    }
-    else { return <span>Press Enter to check the answer</span>; }
+    if (this.state.isFormSubmitted && this.state.isAnswerCorrect) {
+      return <span className='question-result'> Correct!</span>;
+    } else if (this.state.isFormSubmitted && !this.state.isAnswerCorrect) {
+      return  (
+        <span className="question-result question-result__wrong">
+         Wrong. Correct answer is <em>{this.state.body[1]}</em>
+        </span>
+      );
+    } else { return <span className='question-result'>Press Enter to check the answer</span>; }
   }
 
   render() {
@@ -86,12 +91,7 @@ class QuestionForm extends Component {
         <form onSubmit={this.check.bind(this)}>
           <Question body = {this.state.body} value={this.state.key} onChange={this.update}/>
 
-          <p>
-            <span
-              className={this.state.isAnswerCorrect ? 'question-result' : 'question-result question-result__wrong'}>
-              {this.getResultMessage()}
-            </span>
-          </p>
+          <p>{this.getResultMessage()}</p>
 
           <p>
             {this.questions.length === 0 ? "No more questions" : ""}
