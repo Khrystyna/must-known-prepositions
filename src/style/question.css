@@ -9,7 +9,7 @@
 }
 
 
-/* Question input
+/* QuestionForm input
    ========================================================================== */
 .question input {
   width: 80px;
@@ -28,7 +28,7 @@
 }
 
 
-/* Question result message
+/* QuestionForm result message
    ========================================================================== */
 .question-result {  }
 .question-result__wrong {  }
