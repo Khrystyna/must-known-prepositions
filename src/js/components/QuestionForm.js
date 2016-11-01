@@ -8,49 +8,60 @@ import {
 import QuizResult from './QuizResult';
 import Question from './Question';
 
-import {random} from '../utils/helpers';
+import {shuffle} from 'underscore';
+import {makeIterator} from '../utils/helpers';
 
 class QuestionForm extends Component {
   constructor(){
     super();
 
-    this.questions = getQuestions();
-    this.totalQuestionsAmount = getQuestionsAmount();
+    this.allQuestions = makeIterator(shuffle(getQuestions()));
 
     this.state = {
-      /*TODO: 'key' is reserved attribute at React for component list. So, will be better to find
-       *      another name.
-       *      https://facebook.github.io/react/docs/lists-and-keys.html
-       **/
-      key: '',
-      body: this.getRandomQuestion(),
-      isAnswerCorrect: false,
-      isFormSubmitted :false,
-      isNextQuestionAvailable: true,
-      result: 0
+      ...this.getNextState(),
+      result: 0,
+      totalQuestionsAmount: getQuestionsAmount()
     };
 
     this.update = this.update.bind(this);
     this.check = this.check.bind(this);
     this.next = this.next.bind(this);
-    this.getRandomQuestion = this.getRandomQuestion.bind(this);
-  }
-
-  getRandomQuestion() {
-    return this.questions.splice(random(1, this.questions.length), 1)[0];
+    this.reset = this.reset.bind(this);
   }
 
   update(event) {
-    this.setState({key: event.target.value});
+    if (!this.state.isFormSubmitted) {
+      this.setState({userAnswer: event.target.value});
+    }
+  }
+
+  reset () {
+    this.allQuestions = makeIterator(shuffle(getQuestions()));
+
+    this.setState({
+      ...this.getNextState(),
+      result: 0,
+      totalQuestionsAmount: getQuestionsAmount()
+    });
   }
 
   check(event){
     event.preventDefault();
 
-    if (!this.state.key || this.state.isFormSubmitted) return false;
+    const {
+      userAnswer,
+      isFormSubmitted,
+      isNextQuestionAvailable,
+      currentQuestion
+    } = this.state;
 
-    const isAnswerCorrect = this.state.key.trim().toLowerCase() === this.state.body[1];
+    if (!userAnswer) { return false; }
+    if (isFormSubmitted && isNextQuestionAvailable) {
+      return this.next();
+    }
 
+    const isAnswerCorrect = userAnswer.trim().toLowerCase() === currentQuestion[1];
+    
     this.setState((prevState, props) => ({
       isFormSubmitted: true,
       isAnswerCorrect,
@@ -58,49 +69,104 @@ class QuestionForm extends Component {
     }));
   }
 
-  next(event){
-    this.setState({
-      key: '',
-      body: this.getRandomQuestion(),
+  getNextState() {
+    let question = this.allQuestions.next();
+    return {
+      userAnswer: '',
       isFormSubmitted: false,
       isAnswerCorrect: false,
-      isNextQuestionAvailable: this.questions.length > 0
-    });
+      currentQuestion: question.value,
+      isNextQuestionAvailable: !question.done
+    };
+  }
+
+  next(){
+    this.setState(this.getNextState());
   }
 
   getResultMessage () {
-    if (this.state.isFormSubmitted && this.state.isAnswerCorrect) {
-      return <span className='question-result'> Correct!</span>;
-    } else if (this.state.isFormSubmitted && !this.state.isAnswerCorrect) {
-      return  (
-        <span className="question-result question-result__wrong">
-         Wrong. Correct answer is <em>{this.state.body[1]}</em>
+    const {
+      isFormSubmitted,
+      isAnswerCorrect,
+      currentQuestion,
+      isNextQuestionAvailable
+    } = this.state;
+
+    if (isFormSubmitted && isAnswerCorrect) {
+      return (
+        <span className='question-result'>
+          Correct!
+          {isNextQuestionAvailable ? 'Press Enter to continue.' : ''}
+          <br/>
         </span>
       );
-    } else { return <span className='question-result'>Press Enter to check the answer</span>; }
+    } else if (isFormSubmitted && !isAnswerCorrect) {
+      return  (
+        <span className="question-result question-result__wrong">
+         Wrong. Correct answer is <em>{currentQuestion[1]}.</em><br/>
+         {isNextQuestionAvailable ? 'Press Enter to continue.' : ''}
+        </span>
+      );
+    } else if (isNextQuestionAvailable) {
+      return <span className='question-result'>Press Enter to check the answer</span>;
+    }
+  }
+
+  renderResults () {
+    return (
+      <span className="question">
+        Well done!<br/>
+        <button onClick={this.reset}>Try again</button>
+      </span>
+    )
+  }
+
+  getQuestionState () {
+    const {isFormSubmitted, isAnswerCorrect} = this.state;
+
+    return isFormSubmitted
+        ? isAnswerCorrect ? 'success' : 'wrong'
+        : 'pending'
   }
 
   render() {
-    let nextButtonAttributes = {
-      disabled: !this.state.isFormSubmitted,
-      hidden: !this.state.isNextQuestionAvailable
-    };
+    const {
+      isFormSubmitted,
+      isNextQuestionAvailable,
+      currentQuestion,
+      userAnswer,
+      totalQuestionsAmount
+    } = this.state;
 
     return (
       <div>
         <form onSubmit={this.check.bind(this)}>
-          <Question body = {this.state.body} value={this.state.key} onChange={this.update}/>
+          {currentQuestion
+            ? <Question
+                state={this.getQuestionState()}
+                body={currentQuestion}
+                value={userAnswer}
+                onChange={this.update}/>
+            : this.renderResults()
+          }
 
           <p>{this.getResultMessage()}</p>
-
+          
           <p>
-            {this.questions.length === 0 ? "No more questions" : ""}
-            <button type="button" onClick={this.next} {... nextButtonAttributes}>Next question</button>
+            {isNextQuestionAvailable
+              ? <button
+                  type="button"
+                  onClick={this.next}
+                  disabled={!isFormSubmitted}
+                  hidden={!isNextQuestionAvailable}
+                >Next question</button>
+              : "No more questions"
+            }
           </p>
 
         </form>
 
-        <QuizResult value={this.state.result} totalAmount = {this.totalQuestionsAmount}/>
+        <QuizResult value={this.state.result} totalAmount={totalQuestionsAmount}/>
 
       </div>
     );

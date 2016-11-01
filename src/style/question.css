@@ -9,6 +9,7 @@
 }
 
 
+
 /* QuestionForm input
    ========================================================================== */
 .question input {
@@ -26,6 +27,14 @@
   outline: none;
   border-bottom-color: dodgerblue;
 }
+
+.question__pending input:focus {border-bottom-color: dodgerblue;}
+.question__success input:focus {border-bottom-color: #50C878;}
+.question__wrong   input:focus {border-bottom-color: #EA3C53;}
+
+.question__pending input {color: dodgerblue;}
+.question__success input {color: #50C878;}
+.question__wrong   input {color: #EA3C53;}
 
 
 /* QuestionForm result message

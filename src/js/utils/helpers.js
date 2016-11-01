@@ -1,8 +1,11 @@
-// Return a random integer between min and max (inclusive).
-export const random = (min, max) => {
-  if (max == null) {
-    max = min;
-    min = 0;
+export const makeIterator = (array) => {
+  let nextIndex = 0;
+
+  return {
+    next () {
+      return nextIndex < array.length ?
+        {value: array[nextIndex++], done: false} :
+        {done: true};
+    }
   }
-  return min + Math.floor(Math.random() * (max - min + 1));
-};
+}
