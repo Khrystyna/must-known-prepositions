@@ -1,6 +1,6 @@
 import React from 'react';
-const Question = ({body, value, onChange, state}) => (
-  <p className={"question question__" + state}>
+const Question = ({body, value, onChange, status}) => (
+  <p className={"question question__" + status}>
     {body[0]}
     <input type="text" value={value} onChange={onChange}/>
     {body[2]}
@@ -8,11 +8,11 @@ const Question = ({body, value, onChange, state}) => (
 );
 
 Question.propTypes = {
-  state: React.PropTypes.oneOf(['wrong', 'success', 'pending'])
+  status: React.PropTypes.oneOf(['wrong', 'correct', 'pending'])
 };
 
 Question.defaultProps = {
-  state: 'pending'
+  status: 'pending'
 };
 
 export default Question;

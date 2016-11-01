@@ -7,6 +7,7 @@ import {
 
 import QuizResult from './QuizResult';
 import Question from './Question';
+import Answer from './Answer';
 
 import {shuffle} from 'underscore';
 import {makeIterator} from '../utils/helpers';
@@ -48,25 +49,17 @@ class QuestionForm extends Component {
   check(event){
     event.preventDefault();
 
-    const {
-      userAnswer,
-      isFormSubmitted,
-      isNextQuestionAvailable,
-      currentQuestion
-    } = this.state;
+    const {userAnswer, currentQuestion, result} = this.state;
 
     if (!userAnswer) { return false; }
-    if (isFormSubmitted && isNextQuestionAvailable) {
-      return this.next();
-    }
 
     const isAnswerCorrect = userAnswer.trim().toLowerCase() === currentQuestion[1];
     
-    this.setState((prevState, props) => ({
+    this.setState({
       isFormSubmitted: true,
       isAnswerCorrect,
-      result: isAnswerCorrect ? prevState.result + 1 : prevState.result
-    }));
+      result: isAnswerCorrect ? result + 1 : result
+    });
   }
 
   getNextState() {
@@ -80,39 +73,12 @@ class QuestionForm extends Component {
     };
   }
 
-  next(){
+  next(event){
+    event.preventDefault();
     this.setState(this.getNextState());
   }
 
-  getResultMessage () {
-    const {
-      isFormSubmitted,
-      isAnswerCorrect,
-      currentQuestion,
-      isNextQuestionAvailable
-    } = this.state;
-
-    if (isFormSubmitted && isAnswerCorrect) {
-      return (
-        <span className='question-result'>
-          Correct!
-          {isNextQuestionAvailable ? 'Press Enter to continue.' : ''}
-          <br/>
-        </span>
-      );
-    } else if (isFormSubmitted && !isAnswerCorrect) {
-      return  (
-        <span className="question-result question-result__wrong">
-         Wrong. Correct answer is <em>{currentQuestion[1]}.</em><br/>
-         {isNextQuestionAvailable ? 'Press Enter to continue.' : ''}
-        </span>
-      );
-    } else if (isNextQuestionAvailable) {
-      return <span className='question-result'>Press Enter to check the answer</span>;
-    }
-  }
-
-  renderResults () {
+  renderSummaryResults () {
     return (
       <span className="question">
         Well done!<br/>
@@ -121,11 +87,11 @@ class QuestionForm extends Component {
     )
   }
 
-  getQuestionState () {
+  getQuestionStatus () {
     const {isFormSubmitted, isAnswerCorrect} = this.state;
 
     return isFormSubmitted
-        ? isAnswerCorrect ? 'success' : 'wrong'
+        ? isAnswerCorrect ? 'correct' : 'wrong'
         : 'pending'
   }
 
@@ -140,18 +106,24 @@ class QuestionForm extends Component {
 
     return (
       <div>
-        <form onSubmit={this.check.bind(this)}>
+        <form onSubmit={(isFormSubmitted && isNextQuestionAvailable) ? this.next : this.check}>
           {currentQuestion
             ? <Question
-                state={this.getQuestionState()}
+                status={this.getQuestionStatus()}
                 body={currentQuestion}
                 value={userAnswer}
                 onChange={this.update}/>
-            : this.renderResults()
+            : this.renderSummaryResults()
           }
 
-          <p>{this.getResultMessage()}</p>
-          
+          { isFormSubmitted && <Answer body={currentQuestion} value={userAnswer}/>}
+
+          { isNextQuestionAvailable && isFormSubmitted  &&
+            <span className='question-result'><br/>Press Enter to continue</span>}
+
+          { isNextQuestionAvailable && !isFormSubmitted &&
+            <span className='question-result'>Press Enter to check the answer</span>}
+
           <p>
             {isNextQuestionAvailable
               ? <button
