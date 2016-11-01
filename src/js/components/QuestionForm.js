@@ -7,100 +7,138 @@ import {
 
 import QuizResult from './QuizResult';
 import Question from './Question';
+import Answer from './Answer';
 
-import {random} from '../utils/helpers';
+import {shuffle} from 'underscore';
+import {makeIterator} from '../utils/helpers';
 
 class QuestionForm extends Component {
   constructor(){
     super();
 
-    this.questions = getQuestions();
-    this.totalQuestionsAmount = getQuestionsAmount();
+    this.allQuestions = makeIterator(shuffle(getQuestions()));
 
     this.state = {
-      /*TODO: 'key' is reserved attribute at React for component list. So, will be better to find
-       *      another name.
-       *      https://facebook.github.io/react/docs/lists-and-keys.html
-       **/
-      key: '',
-      body: this.getRandomQuestion(),
-      isAnswerCorrect: false,
-      isFormSubmitted :false,
-      isNextQuestionAvailable: true,
-      result: 0
+      ...this.getNextState(),
+      result: 0,
+      totalQuestionsAmount: getQuestionsAmount()
     };
 
     this.update = this.update.bind(this);
     this.check = this.check.bind(this);
     this.next = this.next.bind(this);
-    this.getRandomQuestion = this.getRandomQuestion.bind(this);
-  }
-
-  getRandomQuestion() {
-    return this.questions.splice(random(1, this.questions.length), 1)[0];
+    this.reset = this.reset.bind(this);
   }
 
   update(event) {
-    this.setState({key: event.target.value});
+    if (!this.state.isFormSubmitted) {
+      this.setState({userAnswer: event.target.value});
+    }
+  }
+
+  reset () {
+    this.allQuestions = makeIterator(shuffle(getQuestions()));
+
+    this.setState({
+      ...this.getNextState(),
+      result: 0,
+      totalQuestionsAmount: getQuestionsAmount()
+    });
   }
 
   check(event){
     event.preventDefault();
 
-    if (!this.state.key || this.state.isFormSubmitted) return false;
+    const {userAnswer, currentQuestion, result} = this.state;
 
-    const isAnswerCorrect = this.state.key.trim().toLowerCase() === this.state.body[1];
+    if (!userAnswer) { return false; }
 
-    this.setState((prevState, props) => ({
+    const isAnswerCorrect = userAnswer.trim().toLowerCase() === currentQuestion[1];
+    
+    this.setState({
       isFormSubmitted: true,
       isAnswerCorrect,
-      result: isAnswerCorrect ? prevState.result + 1 : prevState.result
-    }));
-  }
-
-  next(event){
-    this.setState({
-      key: '',
-      body: this.getRandomQuestion(),
-      isFormSubmitted: false,
-      isAnswerCorrect: false,
-      isNextQuestionAvailable: this.questions.length > 0
+      result: isAnswerCorrect ? result + 1 : result
     });
   }
 
-  getResultMessage () {
-    if (this.state.isFormSubmitted && this.state.isAnswerCorrect) {
-      return <span className='question-result'> Correct!</span>;
-    } else if (this.state.isFormSubmitted && !this.state.isAnswerCorrect) {
-      return  (
-        <span className="question-result question-result__wrong">
-         Wrong. Correct answer is <em>{this.state.body[1]}</em>
-        </span>
-      );
-    } else { return <span className='question-result'>Press Enter to check the answer</span>; }
+  getNextState() {
+    let question = this.allQuestions.next();
+    return {
+      userAnswer: '',
+      isFormSubmitted: false,
+      isAnswerCorrect: false,
+      currentQuestion: question.value,
+      isNextQuestionAvailable: !question.done
+    };
+  }
+
+  next(event){
+    event.preventDefault();
+    this.setState(this.getNextState());
+  }
+
+  renderSummaryResults () {
+    return (
+      <span className="question">
+        Well done!<br/>
+        <button onClick={this.reset}>Try again</button>
+      </span>
+    )
+  }
+
+  getQuestionStatus () {
+    const {isFormSubmitted, isAnswerCorrect} = this.state;
+
+    return isFormSubmitted
+        ? isAnswerCorrect ? 'correct' : 'wrong'
+        : 'pending'
   }
 
   render() {
-    let nextButtonAttributes = {
-      disabled: !this.state.isFormSubmitted,
-      hidden: !this.state.isNextQuestionAvailable
-    };
+    const {
+      isFormSubmitted,
+      isNextQuestionAvailable,
+      currentQuestion,
+      userAnswer,
+      totalQuestionsAmount
+    } = this.state;
 
     return (
       <div>
-        <form onSubmit={this.check.bind(this)}>
-          <Question body = {this.state.body} value={this.state.key} onChange={this.update}/>
+        <form onSubmit={(isFormSubmitted && isNextQuestionAvailable) ? this.next : this.check}>
+          {currentQuestion
+            ? <Question
+                status={this.getQuestionStatus()}
+                body={currentQuestion}
+                value={userAnswer}
+                onChange={this.update}/>
+            : this.renderSummaryResults()
+          }
 
-          <p>{this.getResultMessage()}</p>
+          { isFormSubmitted && <Answer body={currentQuestion} value={userAnswer}/>}
+
+          { isNextQuestionAvailable && isFormSubmitted  &&
+            <span className='question-result'><br/>Press Enter to continue</span>}
+
+          { isNextQuestionAvailable && !isFormSubmitted &&
+            <span className='question-result'>Press Enter to check the answer</span>}
 
           <p>
-            {this.questions.length === 0 ? "No more questions" : ""}
-            <button type="button" onClick={this.next} {... nextButtonAttributes}>Next question</button>
+            {isNextQuestionAvailable
+              ? <button
+                  type="button"
+                  onClick={this.next}
+                  disabled={!isFormSubmitted}
+                  hidden={!isNextQuestionAvailable}
+                >Next question</button>
+              : "No more questions"
+            }
           </p>
 
         </form>
 
-        <QuizResult value={this.state.result} totalAmount = {this.totalQuestionsAmount}/>
+        <QuizResult value={this.state.result} totalAmount={totalQuestionsAmount}/>
 
       </div>
     );
