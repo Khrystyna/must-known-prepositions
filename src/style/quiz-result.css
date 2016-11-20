@@ -1,0 +1,17 @@
+
+/* ==========================================================================
+   Quiz total score
+   ========================================================================== */
+.quiz-result {
+  margin: 2rem 0;
+  padding: 0.5rem;
+
+  border: 2px solid #c20000;
+
+  font-size: 2rem;
+}
+
+.quiz-result__correct-amount {
+  color: #c20000;
+  font-style: normal;
+}

@@ -1,9 +1,10 @@
 import React from 'react';
+import '../../style/quiz-result.css';
 
 const QuizResult = ({totalAmount, value}) => (
-  <p>
-    <span className="quiz-result">{value} / {totalAmount}</span>
-  </p>
+  <div className="quiz-result">
+    <em className="quiz-result__correct-amount">{value}</em> / {totalAmount}
+  </div>
 );
 
 export default QuizResult;

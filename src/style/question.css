@@ -12,19 +12,8 @@
 /* QuestionForm input
    ========================================================================== */
 .question input {
-  width: 80px;
+  width: 100px;
   margin: 0 10px;
-
-  outline: none;
-  border: none;
-  border-bottom: 1px solid #333;
-
-  text-align: center;
-}
-
-.question input:focus {
-  outline: none;
-  border-bottom-color: dodgerblue;
 }
 
 
@@ -33,19 +22,10 @@
 .question-result {  }
 .question-result__wrong {  }
 
-.question-result em {
+.question-result .preposition {
+  font-size: 1em;
   font-weight: 600;
   font-style: normal;
 }
 
-.question-result__wrong em{
-  color: dodgerblue;
-}
 
-
-/* Quiz total score
-   ========================================================================== */
-.quiz-result {
-  font-size: 3rem;
-  color: dodgerblue;
-}

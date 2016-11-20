@@ -1,31 +1,74 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tag above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i" rel="stylesheet">
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Must-know prepositions</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <link type="text/css" rel="stylesheet" href="%PUBLIC_URL%/css/normalize.css">
+  <!--
+    Notice the use of %PUBLIC_URL% in the tag above.
+    It will be replaced with the URL of the `public` folder during the build.
+    Only files inside the `public` folder can be referenced from the HTML.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+    work correctly both with client-side routing and a non-root public URL.
+    Learn how to configure a non-root public URL by running `npm run build`.
+  -->
+  <title>Must-know prepositions</title>
+</head>
+<body>
+<main>
+  <section class="page page--main">
+    <header class="page__header">
+      <h1>Are you afraid <em class="preposition">of</em> prepositions?</h1>
+    </header>
+    <div class="page__content">
 
-      To begin the development, run `npm start`.
-      To create a production bundle, use `npm run build`.
-    -->
-  </body>
+      <p>
+        Even advanced learners of English find prepositions difficult. There are hardly any rules as to when to use which preposition. The only way to learn prepositions is looking
+        them up in a dictionary, reading a lot in English and learning useful phrases. And practice!
+      </p>
+
+    </div>
+
+    <footer class="page__footer">
+      <p>
+        Take this quiz to check your skills of must-know English prepositions. It won't take much time.
+        <br>
+        <a href="#quiz" aria-label="Scroll down to quiz" title="Scroll down to quiz">Scroll down to quiz</a>
+      <p>
+
+    </footer>
+  </section>
+
+  <section id="quiz" class="page">
+    <div id="root" class="page__content">
+    </div>
+  </section>
+
+  <section class="page">
+    <header>
+      <h2>Share your results with friends!</h2>
+    </header>
+    <div class="page__content">
+      <p>
+        Inspired by <a href="https://greenforest.com.ua/journal/read/must-know-prepositions-3">Green forest article</a>.
+        More exercises like this may be found <a href="https://www.ego4u.com/en/cram-up/grammar/prepositions/exercises?07">here</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<!--
+  This HTML file is a template.
+  If you open it directly in the browser, you will see an empty page.
+
+  You can add webfonts, meta tags, or analytics to this file.
+  The build step will place the bundled scripts into the <body> tag.
+
+  To begin the development, run `npm start`.
+  To create a production bundle, use `npm run build`.
+-->
+</body>
 </html>

@@ -1,4 +1,6 @@
 import React from 'react';
+import '../../style/question.css';
+
 const Question = ({body, value, onChange}) => (
   <p className="question">
     {body[0]}

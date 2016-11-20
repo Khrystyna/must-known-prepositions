@@ -10,7 +10,15 @@ const questions = [
   ["This cake smells", "of", "strawberries"],
   ["I need to concentrate", "on", "my homework"],
   ["I agree", "with", "you"],
-  ["We agree", "on", "almost everything"]
+  ["We agreed", "on", "almost everything"],
+  ["I introduced him", "to", "my parents"],
+  ["I advised my boyfriend", "to", "buy a car"],
+  ["It depends", "on", "the weather"],
+  ["His parents punished him", "for", "smoking"],
+  ["I applied", "for", "a new job"],
+  ["I will vote", "for", "you!"],
+  ["Don't worry", "about", "anything!"]
+  ["Do you like to listen", "to", "the fire crackling?"]
 ];
 
 export const getQuestions = () => questions;
