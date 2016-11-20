@@ -35,7 +35,9 @@ class QuizForm extends Component {
   }
 
   getRandomQuestion() {
-    return this.questions.splice(random(0, this.questions.length-1), 1)[0];
+    var question = this.questions.splice(random(0, this.questions.length-1), 1);
+    console.log(random(0, this.questions.length), question);
+    return question[0];
   }
 
   update(event) {
@@ -76,6 +78,9 @@ class QuizForm extends Component {
          Wrong. Correct answer is <em className="preposition">{this.state.body[1]}</em>.
         </span>
       );
+    }
+    else{
+      return <span className='question-result'>&nbsp;</span>;
     }
   }
 
