@@ -3,3 +3,5 @@ platforms/
 plugins/
 .idea/
 .DS_Store
+build
+npm-debug.log.*
