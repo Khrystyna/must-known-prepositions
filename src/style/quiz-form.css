@@ -12,17 +12,14 @@
   text-align: center;
 }
 
-.quiz-form footer button {
-  width: 150px;
-}
+  .quiz-form footer button {
+    width: 150px;
+  }
 
-.quiz-form footer button:first-child{
-  margin-right: 20px;
-}
+    .quiz-form footer button:first-child{
+      margin-right: 20px;
+    }
 
 .quiz-form .progress-bar {
   margin: 10px 0;
-}
-
-.quiz-form .quiz-result {
 }

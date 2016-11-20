@@ -1,6 +1,5 @@
-
 /* ==========================================================================
-   Page takes almost whole height. Leave 10% to show that there is more
+   Page takes whole height
    ========================================================================== */
 .page {
   display: flex;
@@ -25,15 +24,9 @@
   text-align: center;
 }
 
-.page .page__header {
 
-}
 
-.page .page__content {
-
-}
-
-/* First page */
+/* First page with welcome text and background */
 .page.page--main {
   background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 1)), url("../img/bg.jpg");
   background-size: cover;
@@ -42,9 +35,7 @@
 
 
 
-
-
-/* Select preposition
+/* Select preposition with red color
    ========================================================================== */
 .preposition {
   color: #c20000;

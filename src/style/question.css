@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    Single question styles
    ========================================================================== */
@@ -9,7 +8,7 @@
 }
 
 
-/* QuestionForm input
+/* Quiz Form input field
    ========================================================================== */
 .question input {
   width: 100px;
@@ -17,11 +16,10 @@
 }
 
 
-/* QuestionForm result message
+/* Quiz Form result message
    ========================================================================== */
 .question-result {  }
-.question-result__wrong {  }
-
+.question-result--wrong {  }
 .question-result .preposition {
   font-size: 1em;
   font-weight: 600;

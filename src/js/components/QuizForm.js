@@ -36,7 +36,7 @@ class QuizForm extends Component {
 
   getRandomQuestion() {
     var question = this.questions.splice(random(0, this.questions.length-1), 1);
-    console.log(random(0, this.questions.length), question);
+    console.log(random(0, this.questions.length), question, this.questions.length);
     return question[0];
   }
 
