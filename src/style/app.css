@@ -14,7 +14,8 @@
 }
 
 .page .page__header,
-.page .page__content {
+.page .page__content,
+.page .page__footer {
   width: 100%;
   max-width: 800px;
 
@@ -40,6 +41,19 @@
 .preposition {
   color: #c20000;
   font-weight: 400;
+}
+
+
+
+
+/* Small devices
+   ========================================================================== */
+@media screen and (max-width : 375px) {
+  .page .page__header,
+  .page .page__content,
+  .page .page__footer {
+    padding: 1em;
+  }
 }
 
 

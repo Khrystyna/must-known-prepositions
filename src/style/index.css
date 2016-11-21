@@ -74,7 +74,7 @@ input:focus {
 
 /* Just a simple button
    ========================================================================== */
-button {
+button, input[type="button"] {
   position: relative;
 
   display: inline-block;
@@ -95,18 +95,30 @@ button {
 }
 
 button:focus {
-  outline: none;
+  outline: 1px solid gainsboro;
 }
 
-button:not([disabled]):hover {
+button:not([disabled]):hover,
+input[type="button"]:not([disabled]):hover {
   opacity: 0.9;
 }
 
-button[disabled] {
+button[disabled],
+input[type="button"][disabled] {
   background: gainsboro;
 }
 
-button[hidden] {
+button[hidden],
+input[type="button"][hidden] {
   display: none;
+}
+
+
+/* Small devices
+   ========================================================================== */
+@media screen and (max-width : 375px) {
+  body, html {
+    font-size: 18px;
+  }
 }
 

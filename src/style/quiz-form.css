@@ -14,6 +14,7 @@
 
   .quiz-form footer button {
     width: 150px;
+    margin-bottom: 10px;
   }
 
     .quiz-form footer button:first-child{
@@ -22,4 +23,14 @@
 
 .quiz-form .progress-bar {
   margin: 10px 0;
+}
+
+
+
+/* Small devices
+   ========================================================================== */
+@media screen and (max-width : 320px) {
+  .quiz-form footer button {
+    width: 100%;
+  }
 }

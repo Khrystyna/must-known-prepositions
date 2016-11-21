@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import '../../style/quiz-form.css';
 
 import {
@@ -32,11 +33,11 @@ class QuizForm extends Component {
     this.check = this.check.bind(this);
     this.next = this.next.bind(this);
     this.getRandomQuestion = this.getRandomQuestion.bind(this);
+    this.focusNextButton = this.focusNextButton.bind(this);
   }
 
   getRandomQuestion() {
     var question = this.questions.splice(random(0, this.questions.length-1), 1);
-    console.log(random(0, this.questions.length), question, this.questions.length);
     return question[0];
   }
 
@@ -56,6 +57,13 @@ class QuizForm extends Component {
       isAnswerCorrect,
       result: isAnswerCorrect ? prevState.result + 1 : prevState.result
     }));
+
+    this.focusNextButton();
+  }
+
+  focusNextButton() {
+    // Explicitly focus the text input using the raw DOM API
+    this.nextButton.focus();
   }
 
   next(event){
@@ -121,7 +129,7 @@ class QuizForm extends Component {
           <footer>
             {this.getQuizResultMessage()}
             <button type="submit" onClick={this.check.bind(this)} {... submitButtonAttributes}>Check</button>
-            <button type="button" onClick={this.next} {... nextButtonAttributes}>Next question</button>
+            <button type="button" onClick={this.next} {... nextButtonAttributes} ref={(button) => { this.nextButton = button; }} >Next question</button>
           </footer>
 
         </form>
