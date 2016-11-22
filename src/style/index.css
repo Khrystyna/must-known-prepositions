@@ -95,7 +95,8 @@ button, input[type="button"] {
 }
 
 button:focus {
-  outline: 1px solid gainsboro;
+  outline: 1px dotted #c20000;
+  outline-offset: 2px;
 }
 
 button:not([disabled]):hover,

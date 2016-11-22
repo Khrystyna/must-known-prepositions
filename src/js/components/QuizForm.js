@@ -33,7 +33,16 @@ class QuizForm extends Component {
     this.check = this.check.bind(this);
     this.next = this.next.bind(this);
     this.getRandomQuestion = this.getRandomQuestion.bind(this);
-    this.focusNextButton = this.focusNextButton.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.state.isNextQuestionAvailable && this.state.isFormSubmitted) {
+      this.nextButton.focus();
+    }
+
+    if (!this.state.isFormSubmitted) {
+      this.prepositionInput.focus();
+    }
   }
 
   getRandomQuestion() {
@@ -57,14 +66,8 @@ class QuizForm extends Component {
       isAnswerCorrect,
       result: isAnswerCorrect ? prevState.result + 1 : prevState.result
     }));
-
-    this.focusNextButton();
   }
 
-  focusNextButton() {
-    // Explicitly focus the text input using the raw DOM API
-    this.nextButton.focus();
-  }
 
   next(event){
     this.setState({
@@ -122,14 +125,22 @@ class QuizForm extends Component {
 
           <QuizProgress value={this.totalQuestionsAmount - this.questions.length} totalAmount={this.totalQuestionsAmount}/>
 
-          <Question body={this.state.body} value={this.state.preposition} onChange={this.update}/>
+          <Question body={this.state.body} value={this.state.preposition} onChange={this.update} ref={(input) => { this.prepositionInput = input; }}/>
 
           <p>{this.getQuestionResultMessage()}</p>
 
           <footer>
             {this.getQuizResultMessage()}
-            <button type="submit" onClick={this.check.bind(this)} {... submitButtonAttributes}>Check</button>
-            <button type="button" onClick={this.next} {... nextButtonAttributes} ref={(button) => { this.nextButton = button; }} >Next question</button>
+            <button type="submit" onClick={this.check.bind(this)}
+                    {... submitButtonAttributes}
+                    ref={(button) => { this.submitButton = button; }} >Check</button>
+            <button type="button" onClick={this.next}
+                    {... nextButtonAttributes}
+                    ref={(button) => { this.nextButton = button; }} >Next question</button>
+
+            <div className="warning warning--info">
+              Don't be afraid to use Enter kye to submit form ;)
+            </div>
           </footer>
 
         </form>

@@ -45,6 +45,24 @@
 
 
 
+/* Warning messages
+   ========================================================================== */
+.warning {
+  margin: 0.5rem 0;
+
+  font-style: italic;
+  font-size: 0.6rem;
+}
+
+  .warning--info {
+    color: #828181;
+  }
+
+  .warning--error {
+    color: #c20000;
+  }
+
+
 
 /* Small devices
    ========================================================================== */
